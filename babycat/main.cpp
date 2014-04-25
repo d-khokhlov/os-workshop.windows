@@ -1,8 +1,5 @@
 #include <stdio.h>
 #include <windows.h>
-//#include <fcntl.h>
-//#include <unistd.h>
-//#include <stdlib.h>
 
 #define BUFFER_SIZE 100
 
