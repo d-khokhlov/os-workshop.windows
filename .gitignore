@@ -1,0 +1,24 @@
+# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
+[Dd]ebug/
+[Rr]elease/
+
+# mstest test results
+#TestResults
+
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+
+# Browsing database files
+*.opensdf
+*.sdf
+
+# ReSharper is a .NET coding add-in
+#_ReSharper*
+
+# NuGet Packages Directory
+#packages
+
+# Windows Store app package directory
+#AppPackages/
