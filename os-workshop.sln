@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "babywc", "babywc\babywc.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "babylinkp", "babylinkp\babylinkp.vcxproj", "{670F6DEC-6695-40B0-8287-EDE8E7DB5F48}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "babyshell", "babyshell\babyshell.vcxproj", "{AD0C620B-3F2D-455E-A0AB-3E83285CF8C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -39,6 +41,10 @@ Global
 		{670F6DEC-6695-40B0-8287-EDE8E7DB5F48}.Debug|Win32.Build.0 = Debug|Win32
 		{670F6DEC-6695-40B0-8287-EDE8E7DB5F48}.Release|Win32.ActiveCfg = Release|Win32
 		{670F6DEC-6695-40B0-8287-EDE8E7DB5F48}.Release|Win32.Build.0 = Release|Win32
+		{AD0C620B-3F2D-455E-A0AB-3E83285CF8C2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AD0C620B-3F2D-455E-A0AB-3E83285CF8C2}.Debug|Win32.Build.0 = Debug|Win32
+		{AD0C620B-3F2D-455E-A0AB-3E83285CF8C2}.Release|Win32.ActiveCfg = Release|Win32
+		{AD0C620B-3F2D-455E-A0AB-3E83285CF8C2}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
