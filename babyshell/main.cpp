@@ -184,7 +184,7 @@ int main( int argc, char **argv )
             } else {
 
                 // Считаем, что была задана неверная команда, и выводим соответствующее сообщение.
-                fprintf( stderr, "error: unknown command '%s'\n", commandName    );
+                fprintf( stderr, "error: unknown command '%s'\n", commandName );
             }
 
             // Если это не первая команда, закрыть первоначальный дескриптор выхода канала,
