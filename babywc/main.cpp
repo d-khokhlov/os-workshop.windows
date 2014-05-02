@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <windows.h>
 
-void printUsageAndExit( )
+void printUsageAndExit()
 {
 
     puts( "Usage: babywc [-l|-c] <filename>" );
@@ -40,7 +40,7 @@ int main( int argc, char **argv )
                         mode = 'l';
                         break;
                     default:
-                        printUsageAndExit( );
+                        printUsageAndExit();
                 }
 
                 // Перейти к следующему символу для следующей итерации
@@ -58,7 +58,7 @@ int main( int argc, char **argv )
 
     // Если имя файла не было получено, вывести usage и выйти
     if ( filename == NULL ) {
-        printUsageAndExit( );
+        printUsageAndExit();
     }
 
     // Открыть заданный файл на чтение

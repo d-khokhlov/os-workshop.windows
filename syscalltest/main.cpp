@@ -4,7 +4,7 @@
 
 #define BUFFER_SIZE 100
 
-void testProcessCalls( )
+void testProcessCalls()
 {
     printf( "parent: started\n" );
 
@@ -45,7 +45,7 @@ void testProcessCalls( )
     printf( "parent: exiting\n" );
 }
 
-void testFileCalls( )
+void testFileCalls()
 {
     char *filename = "input.txt";
 
@@ -83,7 +83,7 @@ void testFileCalls( )
     printf( "Атрибуты данного файла: 0x%08lx. Размер в байтах: %li.\n", info.dwFileAttributes, info.nFileSizeLow );
 }
 
-void dir( )
+void dir()
 {
     STARTUPINFO siChild;
     ZeroMemory( &siChild, sizeof( STARTUPINFO ) );
@@ -124,7 +124,7 @@ void attrib( char *filename )
     printf( "\n" );
 }
 
-void testFsCalls( )
+void testFsCalls()
 {
     char *dirname = "some-test-dir";
 
@@ -132,13 +132,13 @@ void testFsCalls( )
     CreateDirectory( dirname, NULL );
 
     printf( "Вот, что получилось:\n" );
-    dir( );
+    dir();
 
     printf( "Теперь удалим эту директорию.\n" );
     RemoveDirectory( dirname );
 
     printf( "Вот, что получилось теперь:\n" );
-    dir( );
+    dir();
 
     char *filename = "some-test-file";
     char *linkname = "some-test-link";
@@ -150,18 +150,18 @@ void testFsCalls( )
     CreateHardLink( linkname, filename, NULL );
 
     printf( "Получили следующее:\n" );
-    dir( );
+    dir();
 
     printf( "Сначала удалим исходное имя файла:\n" );
     DeleteFile( filename );
-    dir( );
+    dir();
 
     printf( "А теперь удалим второе имя файла (ссылку):\n" );
     DeleteFile( linkname );
-    dir( );
+    dir();
 }
 
-void testOtherCalls( )
+void testOtherCalls()
 {
     char *filename = "temp-file-for-chmod-test";
 
@@ -170,7 +170,7 @@ void testOtherCalls( )
     GetEnvironmentVariable( "USERPROFILE", homePath, BUFFER_SIZE );
     strcat( homePath, "\\" );
     SetCurrentDirectory( homePath );
-    dir( );
+    dir();
 
     printf( "Создадим здесь файл '%s' с атрибутом 'только для чтения':\n", filename );
     CloseHandle( CreateFile( filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_READONLY, NULL ) );
@@ -189,7 +189,7 @@ void testOtherCalls( )
     char *command = "ping -t google.com";
     printf( "Теперь создадим дочерний процесс '%s'.\n", command );
     printf( "Нажмите ENTER, когда будете готовы.\nЧтобы завершить этот дочерний процесс, нажмите ENTER еще раз.\n" );
-    getchar( );
+    getchar();
 
     STARTUPINFO siChild;
     ZeroMemory( &siChild, sizeof( STARTUPINFO ) );
@@ -204,7 +204,7 @@ void testOtherCalls( )
 
         CloseHandle( piChild.hThread );
 
-        getchar( );
+        getchar();
         TerminateProcess( piChild.hProcess, 0 );
 
         CloseHandle( piChild.hProcess );
@@ -218,22 +218,22 @@ int main( int argc, char **argv )
     setlocale( LC_ALL, "Russian" );
 
     printf( "\nДемонстрация системных вызовов управления процессами\n\n" );
-    testProcessCalls( );
+    testProcessCalls();
     printf( "\n(для продолжения нажмите ENTER)\n" );
-    getchar( );
+    getchar();
 
     printf( "\nДемонстрация системных вызовов файлового ввода/вывода\n\n" );
-    testFileCalls( );
+    testFileCalls();
     printf( "\n(для продолжения нажмите ENTER)\n" );
-    getchar( );
+    getchar();
 
     printf( "\nДемонстрация системных вызовов управления файловой системой\n\n" );
-    testFsCalls( );
+    testFsCalls();
     printf( "(для продолжения нажмите ENTER)\n" );
-    getchar( );
+    getchar();
 
     printf( "\nДемонстрация прочих системных вызовов\n\n" );
-    testOtherCalls( );
+    testOtherCalls();
 
     return 0;
 }

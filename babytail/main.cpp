@@ -3,7 +3,7 @@
 
 #define BUFFER_SIZE 100
 
-void printUsageAndExit( )
+void printUsageAndExit()
 {
 
     puts( "Usage: babytail [-c <bytes_count>] <filename>" );
@@ -19,7 +19,7 @@ int main( int argc, char **argv )
     if ( argc < 2 ) {
 
         // ¬ывести usage и выйти
-        printUsageAndExit( );
+        printUsageAndExit();
     }
 
     char *filename;
@@ -33,13 +33,13 @@ int main( int argc, char **argv )
         // ¬ этом случае минимальное количество параметров
         // увеличиваетс€ на 2. ¬ывести usage и выйти, если передано меньше
         if ( argc < 4 ) {
-            printUsageAndExit( );
+            printUsageAndExit();
         }
 
         // ѕолучить требуемое количество байт из второго параметра.
         // ≈сли не удалось, вывести usage и выйти.
         if ( sscanf( argv[ 2 ], "%i", &count ) != 1 ) {
-            printUsageAndExit( );
+            printUsageAndExit();
         }
 
         filename = argv[ 3 ];
