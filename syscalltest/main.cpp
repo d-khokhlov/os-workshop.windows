@@ -6,7 +6,6 @@
 
 void testProcessCalls( )
 {
-
     printf( "parent: started\n" );
 
     int i;
@@ -48,7 +47,6 @@ void testProcessCalls( )
 
 void testFileCalls( )
 {
-
     char *filename = "input.txt";
 
     puts( "¬ведите строку:" );
