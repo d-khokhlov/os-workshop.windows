@@ -102,6 +102,28 @@ void dir( )
     printf( "\n" );
 }
 
+void attrib( char *filename )
+{
+    char command[ BUFFER_SIZE ] = "attrib ";
+    strcat( command, filename );
+
+    STARTUPINFO siChild;
+    ZeroMemory( &siChild, sizeof( STARTUPINFO ) );
+    siChild.cb = sizeof( STARTUPINFO );
+
+    PROCESS_INFORMATION piChild;
+
+    BOOL isCreated = CreateProcess( NULL, command, NULL, NULL, TRUE, 0, NULL, NULL,
+        &siChild, &piChild );
+
+    if ( isCreated ) {
+        CloseHandle( piChild.hThread );
+        WaitForSingleObject( piChild.hProcess, INFINITE );
+        CloseHandle( piChild.hProcess );
+    }
+    printf( "\n" );
+}
+
 void testFsCalls( )
 {
     char *dirname = "some-test-dir";
@@ -141,40 +163,55 @@ void testFsCalls( )
 
 void testOtherCalls( )
 {
-    /*
     char *filename = "temp-file-for-chmod-test";
 
-    printf( "Перейдем в '/tmp':\n" );
-    chdir( "/tmp" );
+    printf( "Перейдем в директорию для временных файлов:\n" );
+    char homePath[ BUFFER_SIZE ];
+    GetEnvironmentVariable( "USERPROFILE", homePath, BUFFER_SIZE );
+    strcat( homePath, "\\" );
+    SetCurrentDirectory( homePath );
     dir( );
 
-    printf( "Создадим здесь файл '%s' с минимальным уровнем доступа:\n", filename );
-    close( open( filename, O_CREAT | O_TRUNC | O_WRONLY, 0400 ) );
-    dir( );
+    printf( "Создадим здесь файл '%s' с атрибутом 'только для чтения':\n", filename );
+    CloseHandle( CreateFile( filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_READONLY, NULL ) );
+    attrib( filename );
 
-    printf( "Теперь расширим уровень доступа для этого файла:\n" );
-    chmod( filename, 0777 );
-    dir( );
+    printf( "Теперь снимем атрибут 'только для чтения' с этого файла:\n" );
+    SetFileAttributes( filename, FILE_ATTRIBUTE_NORMAL );
+    attrib( filename );
 
-    unlink( filename );
+    DeleteFile( filename );
 
-    printf( "Теперь создадим (fork) дочерний процесс,\nкоторый каждую секунду будет выводить текущую метку времени.\n" );
+    SYSTEMTIME time;
+    GetLocalTime( &time );
+    printf( "Текущие дата и время: %02hu.%02hu.%04hu %02hu:%02hu:%02hu\n\n", time.wDay, time.wMonth, time.wYear, time.wHour, time.wMinute, time.wSecond );
+
+    char *command = "ping -t google.com";
+    printf( "Теперь создадим дочерний процесс '%s'.\n", command );
     printf( "Нажмите ENTER, когда будете готовы.\nЧтобы завершить этот дочерний процесс, нажмите ENTER еще раз.\n" );
     getchar( );
 
-    int pid = fork( );
-    if ( pid == 0 ) {
-        while ( 1 ) {
-            printf( "%li\n", time( NULL ) );
-            sleep( 1 );
-        }
-        exit( 0 );
-    }
+    STARTUPINFO siChild;
+    ZeroMemory( &siChild, sizeof( STARTUPINFO ) );
+    siChild.cb = sizeof( STARTUPINFO );
 
-    getchar( );
-    kill( pid, SIGKILL );
-    printf( "Дочерний процесс завершен.\n" );
-*/}
+    PROCESS_INFORMATION piChild;
+
+    BOOL isCreated = CreateProcess( NULL, command, NULL, NULL, TRUE, 0, NULL, NULL,
+        &siChild, &piChild );
+
+    if ( isCreated ) {
+
+        CloseHandle( piChild.hThread );
+
+        getchar( );
+        TerminateProcess( piChild.hProcess, 0 );
+
+        CloseHandle( piChild.hProcess );
+
+        printf( "Дочерний процесс завершен.\n" );
+    }
+}
 
 int main( int argc, char **argv )
 {
