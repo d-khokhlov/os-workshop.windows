@@ -9,18 +9,21 @@ void testProcessCalls( )
 
     printf( "parent: started\n" );
 
-    STARTUPINFO siChild;
-    ZeroMemory( &siChild, sizeof( STARTUPINFO ) );
-    siChild.cb = sizeof( STARTUPINFO );
-
     int i;
     for ( i = 0; i < 3; i++ ) {
 
-        PROCESS_INFORMATION piChild;
         char command[ BUFFER_SIZE ];
         sprintf( command, "cmd /c echo child %i: echo: executed", i );
+
+        STARTUPINFO siChild;
+        ZeroMemory( &siChild, sizeof( STARTUPINFO ) );
+        siChild.cb = sizeof( STARTUPINFO );
+
+        PROCESS_INFORMATION piChild;
+
         BOOL isCreated = CreateProcess( NULL, command, NULL, NULL, TRUE, 0, NULL, NULL,
             &siChild, &piChild );
+
         if ( isCreated ) {
 
             CloseHandle( piChild.hThread );
