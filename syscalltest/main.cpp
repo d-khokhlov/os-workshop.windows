@@ -83,53 +83,61 @@ void testFileCalls( )
     printf( "Атрибуты данного файла: 0x%08lx. Размер в байтах: %li.\n", info.dwFileAttributes, info.nFileSizeLow );
 }
 
-void ls( )
-{/*
-    if ( fork( ) == 0 ) {
-        execlp( "ls", "ls", "-lAh", NULL );
-        exit( 1 );
+void dir( )
+{
+    STARTUPINFO siChild;
+    ZeroMemory( &siChild, sizeof( STARTUPINFO ) );
+    siChild.cb = sizeof( STARTUPINFO );
+
+    PROCESS_INFORMATION piChild;
+
+    BOOL isCreated = CreateProcess( NULL, "cmd /c dir", NULL, NULL, TRUE, 0, NULL, NULL,
+        &siChild, &piChild );
+
+    if ( isCreated ) {
+        CloseHandle( piChild.hThread );
+        WaitForSingleObject( piChild.hProcess, INFINITE );
+        CloseHandle( piChild.hProcess );
     }
-    wait( NULL );
     printf( "\n" );
-*/}
+}
 
 void testFsCalls( )
 {
-    /*
     char *dirname = "some-test-dir";
 
     printf( "Создадим директорию '%s'.\n", dirname );
-    mkdir( dirname, 0777 );
+    CreateDirectory( dirname, NULL );
 
     printf( "Вот, что получилось:\n" );
-    ls( );
+    dir( );
 
     printf( "Теперь удалим эту директорию.\n" );
-    rmdir( dirname );
+    RemoveDirectory( dirname );
 
     printf( "Вот, что получилось теперь:\n" );
-    ls( );
+    dir( );
 
     char *filename = "some-test-file";
     char *linkname = "some-test-link";
 
     printf( "Теперь создадим файл '%s'.\n", filename );
-    close( open( filename, O_CREAT | O_TRUNC | O_WRONLY, 0666 ) );
+    CloseHandle( CreateFile( filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL ) );
 
     printf( "И создадим ссылку на него с именем '%s'.\n", linkname );
-    link( filename, linkname );
+    CreateHardLink( linkname, filename, NULL );
 
-    printf( "Получили следующее (обратим внимание на второй столбец):\n" );
-    ls( );
+    printf( "Получили следующее:\n" );
+    dir( );
 
-    printf( "Сначала удалим (unlink) исходное имя файла:\n" );
-    unlink( filename );
-    ls( );
+    printf( "Сначала удалим исходное имя файла:\n" );
+    DeleteFile( filename );
+    dir( );
 
     printf( "А теперь удалим второе имя файла (ссылку):\n" );
-    unlink( linkname );
-    ls( );
-*/}
+    DeleteFile( linkname );
+    dir( );
+}
 
 void testOtherCalls( )
 {
@@ -138,15 +146,15 @@ void testOtherCalls( )
 
     printf( "Перейдем в '/tmp':\n" );
     chdir( "/tmp" );
-    ls( );
+    dir( );
 
     printf( "Создадим здесь файл '%s' с минимальным уровнем доступа:\n", filename );
     close( open( filename, O_CREAT | O_TRUNC | O_WRONLY, 0400 ) );
-    ls( );
+    dir( );
 
     printf( "Теперь расширим уровень доступа для этого файла:\n" );
     chmod( filename, 0777 );
-    ls( );
+    dir( );
 
     unlink( filename );
 
