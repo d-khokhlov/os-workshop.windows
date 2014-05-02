@@ -45,7 +45,7 @@ void testProcessCalls( )
 
 void testFileCalls( )
 {
-    /*
+
     char *filename = "input.txt";
 
     puts( "Введите строку:" );
@@ -53,33 +53,34 @@ void testFileCalls( )
     char input[ BUFFER_SIZE ];
     fgets( input, BUFFER_SIZE, stdin );
 
-    int fd = open( filename, O_CREAT | O_TRUNC | O_WRONLY, 0666 );
-    write( fd, input, strlen( input ) );
-    close( fd );
+    HANDLE fh = CreateFile( filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL );
+    WriteFile( fh, input, strlen( input ), NULL, NULL );
+    CloseHandle( fh );
 
     printf( "Ваша строка сохранена в файл '%s'.\n", filename );
 
     char output[ BUFFER_SIZE ];
-    fd = open( filename, O_RDONLY );
-    int length = read( fd, output, BUFFER_SIZE );
+    fh = CreateFile( filename, GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL );
+    DWORD length;
+    ReadFile( fh, output, BUFFER_SIZE, &length, NULL );
 
     puts( "Вот что удалось прочитать из этого файла (должна быть та же строка):" );
     output[ length ] = 0;
     fputs( output, stdout );
 
     puts( "Попробуем вернуться в начало файла и снова прочитать первый символ:" );
-    lseek( fd, 0, SEEK_SET );
-    read( fd, output, 1 );
+    SetFilePointer( fh, 0, 0, FILE_BEGIN );
+    ReadFile( fh, output, 1, NULL, NULL );
     output[ 1 ] = 0;
     puts( output );
 
-    close( fd );
+    CloseHandle( fh );
 
-    struct stat info;
-    stat( filename, &info );
+    WIN32_FILE_ATTRIBUTE_DATA info;
+    GetFileAttributesEx( filename, GetFileExInfoStandard, &info );
 
-    printf( "Данный файл имеет UID %u, GID %u. Его размер в байтах: %li.\n", info.st_uid, info.st_gid, info.st_size );
-*/}
+    printf( "Атрибуты данного файла: 0x%08lx. Размер в байтах: %li.\n", info.dwFileAttributes, info.nFileSizeLow );
+}
 
 void ls( )
 {/*
